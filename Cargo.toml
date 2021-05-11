@@ -1,0 +1,15 @@
+[package]
+name = "ddns"
+version = "0.1.0"
+authors = [
+  "Rodrigo Sanabria <krosf@muchobien.dev>",
+  "Kevin Lopez <lokeon@muchobien.dev>",
+]
+edition = "2018"
+description = "Update your dns on several providers"
+
+[dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+eyre = "0.6.5"
+public-ip = "0.2"
