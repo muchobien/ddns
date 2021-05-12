@@ -1,4 +1,3 @@
-use crate::providersass::Providers;
 use structopt::clap::{arg_enum, AppSettings};
 use structopt::StructOpt;
 #[derive(Debug, StructOpt)]
@@ -24,5 +23,12 @@ arg_enum! {
     enum IpKind {
         V4,
         V6,
+    }
+}
+
+arg_enum! {
+    #[derive(Debug, PartialEq)]
+    enum Providers {
+        Cloudflare
     }
 }
