@@ -1,7 +1,7 @@
 use super::Pagination;
 use crate::framework::{
     endpoint::{Endpoint, Method},
-    response::ApiResult,
+    async_api::ApiResult,
 };
 use serde::{Deserialize, Serialize};
 
@@ -19,7 +19,7 @@ impl<'a> Endpoint<ListDnsRecordsResponse, ListDnsRecordsParams> for ListDnsRecor
     }
 
     fn path(&self) -> String {
-        format!("/v4/domains/{}/records", self.domain)
+        format!("v4/domains/{}/records", self.domain)
     }
 
     fn query(&self) -> Option<ListDnsRecordsParams> {
@@ -29,9 +29,9 @@ impl<'a> Endpoint<ListDnsRecordsResponse, ListDnsRecordsParams> for ListDnsRecor
 
 #[derive(Serialize, Clone, Debug, Default)]
 pub struct ListDnsRecordsParams {
-    limit: Option<u32>,
-    since: Option<u64>,
-    until: Option<u64>,
+    pub limit: Option<u32>,
+    pub since: Option<u64>,
+    pub until: Option<u64>,
 }
 
 #[derive(Debug, Deserialize)]

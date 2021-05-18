@@ -1,9 +1,7 @@
 pub mod async_api;
 pub mod auth;
 pub mod endpoint;
-pub mod response;
-
-mod reqwest_adaptors;
+pub mod reqwest_adaptors;
 
 #[derive(Debug)]
 pub enum Environment {

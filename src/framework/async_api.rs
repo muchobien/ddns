@@ -1,10 +1,15 @@
 use super::{
     auth::{AuthClient, Credentials},
     endpoint::Endpoint,
-    response::{ApiResponse, ApiResult},
 };
 use async_trait::async_trait;
-use serde::Serialize;
+use serde::{de::DeserializeOwned, Serialize};
+use std::fmt::Debug;
+
+pub trait ApiResult: DeserializeOwned + Debug {}
+impl ApiResult for () {}
+
+pub type ApiResponse<ResultType> = eyre::Result<ResultType, reqwest::Error>;
 
 #[async_trait]
 pub trait ApiClient {

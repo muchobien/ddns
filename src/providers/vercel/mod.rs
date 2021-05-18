@@ -1,2 +1,1 @@
-mod client;
-mod endpoints;
+pub mod endpoints;
