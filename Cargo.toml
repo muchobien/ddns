@@ -2,22 +2,23 @@
 name = "ddns"
 version = "0.1.0"
 authors = [
-  "Rodrigo Sanabria <krosf@muchobien.dev>",
-  "Kevin Lopez <lokeon@muchobien.dev>",
+    "Rodrigo Sanabria <krosf@muchobien.dev>",
+    "Kevin Lopez <lokeon@muchobien.dev>",
 ]
 edition = "2018"
 description = "Update your dns on several providers"
 
 [dependencies]
 async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
 eyre = "0.6.5"
 http = "0.2"
+lazy_static = "1.4"
 public-ip = "0.2"
-structopt = "0.3"
 reqwest = { version = "0.11", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+serde_with = "1.9"
+structopt = "0.3"
 tokio = { version = "1", features = ["full"] }
 url = "2.2"
-chrono = { version = "0.4", features = ["serde"] }
-serde_with = "1.9"

@@ -1,2 +1,2 @@
-pub mod vercel;
 pub mod cloudflare;
+pub mod vercel;

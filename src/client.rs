@@ -79,9 +79,10 @@ impl Client {
         request = request.auth(&self.credentials);
         let res = request.send().await?;
         if res.status().is_success() {
-            return res.json::<ResultType>().await;
+            res.json::<ResultType>().await
+        } else {
+            Err(res.error_for_status().unwrap_err())
         }
-        Err(res.error_for_status().unwrap_err())
     }
 }
 
