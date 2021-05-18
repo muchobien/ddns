@@ -100,18 +100,3 @@ impl ApiClient for Client {
         self.request_handle(endpoint).await
     }
 }
-
-// async fn map_api_response<ResultType: ApiResult>(
-//     resp: reqwest::Response,
-// ) -> ApiResponse<ResultType> {
-//     let status = resp.status();
-//     if status.is_success() {
-//         let parsed: Result<ResultType, reqwest::Error> = resp.json().await;
-//         match parsed {
-//             Ok(api_resp) => Ok(api_resp),
-//             Err(e) => eyre!("{:?}", e),
-//         }
-//     }
-
-//     eyre!("Not Allowed")
-// }

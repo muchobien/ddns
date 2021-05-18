@@ -1,25 +1,24 @@
+use ddns::config::Config;
 use ddns::framework::async_api::ApiClient;
-use ddns::framework::auth::Credentials;
-use ddns::providers::cloudflare::endpoints::dns;
 use ddns::{
     client::{Client, HttpApiClientConfig},
-    framework::Environment,
+    providers::cloudflare::endpoints::dns,
 };
 use eyre::Result;
+use structopt::StructOpt;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    let config = Config::from_args();
     let client = Client::new(
-        Credentials::UserAuthKey{
-            email: "email".to_string(),
-            key: "llave".to_string(),
-        },
+        config.credentials(),
         HttpApiClientConfig::default(),
-        Environment::Custom(url::Url::parse("https://api.cloudflare.com/client/v4/").unwrap()),
+        config.provider(),
     )?;
+
     let res = client
         .request(&dns::ListDnsRecords {
-            zone_identifier: "zonita",
+            zone_identifier: &config.zone.clone().unwrap(),
             params: dns::ListDnsRecordsParams {
                 ..Default::default()
             },
