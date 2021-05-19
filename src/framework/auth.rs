@@ -1,4 +1,5 @@
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum Credentials {
     UserAuthKey { email: String, key: String },
     UserAuthToken { token: String },

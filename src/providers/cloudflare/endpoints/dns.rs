@@ -32,6 +32,7 @@ impl<'a> Endpoint<Response<Vec<Record>>, ListDnsRecordsParams> for ListDnsRecord
 
 #[derive(Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
+#[allow(dead_code)]
 pub enum ListDnsRecordsOrder {
     Type,
     Name,

@@ -2,6 +2,8 @@ use crate::framework::async_api::ApiResult;
 use crate::framework::Environment;
 use serde::Serialize;
 use url::Url;
+
+#[allow(dead_code)]
 pub enum Method {
     Get,
     Post,

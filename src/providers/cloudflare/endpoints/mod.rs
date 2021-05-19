@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::value::Value as JsonValue;
 
 #[derive(Serialize, Clone, Debug)]
+#[allow(dead_code)]
 pub enum OrderDirection {
     #[serde(rename = "asc")]
     Ascending,
@@ -17,6 +18,7 @@ pub enum OrderDirection {
 /// Tells the API whether to return results that match all search requirements or at least one (any).
 #[derive(Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
+#[allow(dead_code)]
 pub enum SearchMatch {
     /// Match all search requirements
     All,

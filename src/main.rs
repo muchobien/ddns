@@ -1,14 +1,19 @@
-use ddns::config::Config;
-use ddns::framework::async_api::ApiClient;
-use ddns::{
-    client::{Client, HttpApiClientConfig},
-    providers::cloudflare::endpoints::dns,
-};
-use eyre::Result;
+mod client;
+mod config;
+mod framework;
+mod providers;
+
 use structopt::StructOpt;
 
+use crate::{
+    client::{Client, HttpApiClientConfig},
+    config::Config,
+    framework::async_api::ApiClient,
+    providers::cloudflare::endpoints::dns,
+};
+
 #[tokio::main]
-async fn main() -> Result<()> {
+async fn main() -> eyre::Result<()> {
     let config = Config::from_args();
     let client = Client::new(
         config.credentials(),
