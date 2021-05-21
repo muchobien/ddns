@@ -44,7 +44,7 @@ impl Client {
 
         let http_client = builder.build()?;
 
-        Ok(Client {
+        Ok(Self {
             environment,
             credentials,
             http_client,
