@@ -202,7 +202,6 @@ dependencies = [
  "chrono",
  "eyre",
  "http",
- "lazy_static",
  "public-ip",
  "reqwest",
  "serde",

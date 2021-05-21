@@ -1,7 +1,10 @@
 use structopt::clap::{arg_enum, AppSettings};
 use structopt::StructOpt;
 
-use crate::framework::{auth::Credentials, Environment};
+use crate::{
+    framework::{auth::Credentials, Environment},
+    providers::{self, Updater},
+};
 #[derive(Debug, StructOpt)]
 #[structopt(
     about,
@@ -10,14 +13,21 @@ use crate::framework::{auth::Credentials, Environment};
 )]
 pub struct Config {
     #[structopt(short, long, env = "DDNS_DOMAIN")]
-    domain: String,
+    pub domain: String,
     #[structopt(short, long, env = "DDNS_HOST")]
     pub host: String,
-    #[structopt(short, long, possible_values=&Providers::variants(), case_insensitive= true, env = "DDNS_PROVIDER")]
+    #[structopt(short, long, case_insensitive = true, env = "DDNS_PROVIDER", possible_values = &Providers::variants())]
     provider: Providers,
     #[structopt(short, long, env = "DDNS_PROVIDER_KEY")]
     key: String,
-    #[structopt(short, long, possible_values=&IpKind::variants(), default_value="v4", case_insensitive= true, env = "DDNS_IP_KIND")]
+    #[structopt(
+        short,
+        long,
+        default_value = "v4",
+        case_insensitive = true,
+        env = "DDNS_IP_KIND",
+        possible_values = &IpKind::variants()
+    )]
     ip_kind: String,
     #[structopt(
         short,
@@ -34,6 +44,7 @@ pub struct Config {
     )]
     pub zone: Option<String>,
 }
+
 arg_enum! {
     #[derive(Debug, PartialEq)]
     enum IpKind {
@@ -53,11 +64,11 @@ arg_enum! {
 impl Config {
     pub fn provider(&self) -> Environment {
         match self.provider {
-            Providers::Cloudflare => Environment::Custom(
-                url::Url::parse("https://api.cloudflare.com/client/v4/").unwrap(),
-            ),
+            Providers::Cloudflare => {
+                Environment::Base(url::Url::parse("https://api.cloudflare.com/client/v4/").unwrap())
+            }
             Providers::Vercel => {
-                Environment::Custom(url::Url::parse("https://api.vercel.com/").unwrap())
+                Environment::Base(url::Url::parse("https://api.vercel.com/").unwrap())
             }
         }
     }
@@ -71,6 +82,13 @@ impl Config {
             Providers::Vercel => Credentials::UserAuthToken {
                 token: self.key.clone(),
             },
+        }
+    }
+
+    pub fn updater(&self) -> Box<dyn Updater> {
+        match self.provider {
+            Providers::Cloudflare => Box::new(providers::Cloudflare),
+            Providers::Vercel => Box::new(providers::Vercel),
         }
     }
 }

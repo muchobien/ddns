@@ -5,13 +5,13 @@ pub mod reqwest_adaptors;
 
 #[derive(Debug)]
 pub enum Environment {
-    Custom(url::Url),
+    Base(url::Url),
 }
 
 impl<'a> From<&'a Environment> for url::Url {
     fn from(environment: &Environment) -> Self {
         match environment {
-            Environment::Custom(url) => url.clone(),
+            Environment::Base(url) => url.clone(),
         }
     }
 }

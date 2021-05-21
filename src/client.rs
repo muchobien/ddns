@@ -3,14 +3,12 @@ use std::time::Duration;
 use serde::Serialize;
 
 use crate::framework::{
-    async_api::{ApiClient, ApiResponse, ApiResult},
+    async_api::{ApiResponse, ApiResult},
     auth::{self, AuthClient},
     endpoint::Endpoint,
     reqwest_adaptors::match_reqwest_method,
     Environment,
 };
-
-use async_trait::async_trait;
 
 pub struct Client {
     environment: Environment,
@@ -53,7 +51,7 @@ impl Client {
         })
     }
 
-    pub async fn request_handle<ResultType, QueryType, BodyType>(
+    pub async fn request<ResultType, QueryType, BodyType>(
         &self,
         endpoint: &(dyn Endpoint<ResultType, QueryType, BodyType> + Send + Sync),
     ) -> ApiResponse<ResultType>
@@ -83,20 +81,5 @@ impl Client {
         } else {
             Err(res.error_for_status().unwrap_err())
         }
-    }
-}
-
-#[async_trait]
-impl ApiClient for Client {
-    async fn request<ResultType, QueryType, BodyType>(
-        &self,
-        endpoint: &(dyn Endpoint<ResultType, QueryType, BodyType> + Send + Sync),
-    ) -> ApiResponse<ResultType>
-    where
-        ResultType: ApiResult,
-        QueryType: Serialize,
-        BodyType: Serialize,
-    {
-        self.request_handle(endpoint).await
     }
 }

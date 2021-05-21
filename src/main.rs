@@ -8,8 +8,6 @@ use structopt::StructOpt;
 use crate::{
     client::{Client, HttpApiClientConfig},
     config::Config,
-    framework::async_api::ApiClient,
-    providers::cloudflare::endpoints::dns,
 };
 
 #[tokio::main]
@@ -21,14 +19,11 @@ async fn main() -> eyre::Result<()> {
         config.provider(),
     )?;
 
-    let res = client
-        .request(&dns::ListDnsRecords {
-            zone_identifier: &config.zone.clone().unwrap(),
-            params: dns::ListDnsRecordsParams {
-                ..Default::default()
-            },
-        })
-        .await?;
-    println!("{:?}", res);
-    Ok(())
+    let ip = public_ip::addr()
+        .await
+        .ok_or(eyre::eyre!("Unable to get public ip"))?;
+
+    let updater = config.updater();
+
+    updater.update(ip, &config, &client).await
 }
