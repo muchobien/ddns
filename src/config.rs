@@ -57,7 +57,7 @@ arg_enum! {
     #[derive(Debug, PartialEq)]
     enum Providers {
         Cloudflare,
-        Vercel
+        Vercel,
     }
 }
 

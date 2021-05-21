@@ -1,9 +1,7 @@
 #[derive(Debug)]
-#[allow(dead_code)]
 pub enum Credentials {
     UserAuthKey { email: String, key: String },
     UserAuthToken { token: String },
-    Service { key: String },
 }
 
 impl Credentials {
@@ -15,7 +13,6 @@ impl Credentials {
             Self::UserAuthToken { token } => {
                 vec![("Authorization", format!("Bearer {}", token.clone()))]
             }
-            Self::Service { key } => vec![("X-Auth-User-Service-Key", key.clone())],
         }
     }
 }
