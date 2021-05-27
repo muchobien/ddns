@@ -1,14 +1,19 @@
-use std::net::IpAddr;
-
-use crate::{client::Client, config::Config};
 use async_trait::async_trait;
+use serde::Deserialize;
+use std::net::IpAddr;
+use strum::{EnumString, EnumVariantNames};
 
-pub(crate) mod cloudflare;
-pub(crate) mod vercel;
-pub use cloudflare::Cloudflare;
-pub use vercel::Vercel;
+pub mod cloudflare;
+pub mod vercel;
 
 #[async_trait]
-pub trait Updater {
-    async fn update(&self, ip: IpAddr, config: &Config, client: &Client) -> eyre::Result<()>;
+pub trait Provider {
+    async fn update(&self, ip: IpAddr) -> eyre::Result<()>;
+}
+
+#[derive(Debug, Deserialize, EnumString, EnumVariantNames)]
+#[strum(serialize_all = "lowercase")]
+pub enum Providers {
+    Cloudflare,
+    Vercel,
 }

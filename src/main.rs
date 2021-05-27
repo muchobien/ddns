@@ -1,29 +1,18 @@
-mod client;
-mod config;
-mod framework;
+mod settings;
+
 mod providers;
 
-use structopt::StructOpt;
-
-use crate::{
-    client::{Client, HttpApiClientConfig},
-    config::Config,
-};
+use settings::Settings;
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    let config = Config::from_args();
-    let client = Client::new(
-        config.credentials(),
-        HttpApiClientConfig::default(),
-        config.provider(),
-    )?;
+    let settings = Settings::new()?;
 
     let ip = public_ip::addr()
         .await
         .ok_or(eyre::eyre!("Unable to get public ip"))?;
 
-    let updater = config.updater();
+    settings.provider()?.update(ip).await?;
 
-    updater.update(ip, &config, &client).await
+    Ok(())
 }
