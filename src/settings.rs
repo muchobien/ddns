@@ -10,9 +10,9 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {
-    host: String,
     provider: String,
     pub cloudflare: Option<CloudflareConfig>,
+    //pub cron: String,
 }
 
 impl Settings {

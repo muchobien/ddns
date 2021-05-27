@@ -2,17 +2,21 @@ mod settings;
 
 mod providers;
 
-use settings::Settings;
+use std::thread::{self};
 
-#[tokio::main]
+use settings::Settings;
+use std::time::Duration;
+
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> eyre::Result<()> {
     let settings = Settings::new()?;
 
-    let ip = public_ip::addr()
-        .await
-        .ok_or(eyre::eyre!("Unable to get public ip"))?;
+    loop {
+        let ip = public_ip::addr()
+            .await
+            .ok_or(eyre::eyre!("Unable to get public ip"))?;
 
-    settings.provider()?.update(ip).await?;
-
-    Ok(())
+        settings.provider()?.update(ip).await?;
+        thread::sleep(Duration::from_secs(5));
+    }
 }
