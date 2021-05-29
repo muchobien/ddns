@@ -20,5 +20,5 @@ structopt = "0.3"
 tokio = { version = "1", features = ["full"] }
 validator = { version = "0.13", features = ["derive"] }
 strum = { version = "0.20", features = ["derive"] }
-cron-parser = "0.7"
+cron = "0.9"
 chrono = "0.4"
