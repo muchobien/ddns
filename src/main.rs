@@ -1,15 +1,16 @@
+mod cron;
+mod providers;
 mod settings;
 
-mod providers;
-
-use std::thread::{self};
-
+use chrono::Utc;
+use cron::Cron;
 use settings::Settings;
-use std::time::Duration;
+use std::thread;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> eyre::Result<()> {
     let settings = Settings::new()?;
+    let mut cron = Cron::new(settings.cron.clone(), &Utc::now())?;
 
     loop {
         let ip = public_ip::addr()
@@ -17,6 +18,9 @@ async fn main() -> eyre::Result<()> {
             .ok_or(eyre::eyre!("Unable to get public ip"))?;
 
         settings.provider()?.update(ip).await?;
-        thread::sleep(Duration::from_secs(5));
+        let duration = cron.duration()?;
+        println!("next update at {:?}", duration);
+        thread::sleep(duration);
+        cron.next()?;
     }
 }

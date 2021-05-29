@@ -12,7 +12,7 @@ use serde::Deserialize;
 pub struct Settings {
     provider: String,
     pub cloudflare: Option<CloudflareConfig>,
-    //pub cron: String,
+    pub cron: String,
 }
 
 impl Settings {
