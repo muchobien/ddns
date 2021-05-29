@@ -10,17 +10,17 @@ use std::thread;
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> eyre::Result<()> {
     let settings = Settings::new()?;
-    let mut cron = Cron::new(settings.cron.clone(), &Utc::now())?;
+    let mut cron = Cron::new(&settings.cron, &Utc::now())?;
+    let provider = settings.provider()?;
 
     loop {
         let ip = public_ip::addr()
             .await
             .ok_or(eyre::eyre!("Unable to get public ip"))?;
-
-        settings.provider()?.update(ip).await?;
+        provider.update(ip).await?;
         let duration = cron.duration()?;
         println!("next update at {:?}", duration);
         thread::sleep(duration);
-        cron.next()?;
+        cron.next();
     }
 }
