@@ -10,15 +10,13 @@ description = "Update your dynamic ip on several dns providers"
 
 [dependencies]
 async-trait = "0.1"
+chrono = "0.4"
 cloudflare = { git = "https://github.com/muchobien/cloudflare-rs" }
 config = { version = "0.11", default-features = false }
+cron = "0.9"
 eyre = "0.6.5"
 public-ip = "0.2"
 serde = "1.0"
 serde_derive = "1.0"
-structopt = "0.3"
-tokio = { version = "1", features = ["full"] }
-validator = { version = "0.13", features = ["derive"] }
 strum = { version = "0.20", features = ["derive"] }
-cron = "0.9"
-chrono = "0.4"
+tokio = { version = "1", features = ["full"] }
